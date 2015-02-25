@@ -34,12 +34,12 @@ let g:unite_source_file_mru_limit = 200
 nnoremap <silent> ,uu :<C-u>Unite file_mru buffer -start-insert<CR>
 nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
 nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
-
 nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-
 nnoremap <silent> ,uy :<C-u>Unite history/yank<CR>
 
-nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+" 閉じちゃったUniteをもう一度開く
+nnoremap <silent> ,ur :<C-u>UniteResume<CR>
+" nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> ,ul :<C-u>Unite -buffer-name=search line -start-insert -no-quit -winheight=15<CR>
 
 NeoBundle 'osyo-manga/unite-qfixhowm'
