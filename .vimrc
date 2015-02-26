@@ -48,8 +48,10 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-operator-replace', { 'depends' : ["kana/vim-operator-user"] } 
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
+NeoBundleLazy 'kannokanno/previm', {
+      \    'depends':   'open-browser.vim',
+      \    'filetypes': 'markdown',}
 NeoBundleLazy 'rom-8/buddy-swith', {
   \ 'autoload' : {'filetypes' : ['ruby', 'eruby', 'ruby.rspec']}}
 
@@ -375,6 +377,9 @@ let g:watchdogs_check_CursorHold_enable = 1
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
+"}}}
+"previm setting{{{2
+autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,mdwn,mkdn,mark*} setlocal filetype=markdown
 "}}}
 "buddy-switch setting {{{2
 nnoremap <silent> ,bo :<C-u>call RSSwitch()<CR>
