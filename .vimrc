@@ -379,7 +379,7 @@ nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
 "}}}
 "previm setting{{{2
-  autocmd BufWinEnter,BufNewFile *.{md,mkd,mdwn,mkdn,mark*} set filetype=markdown
+autocmd BufWinEnter,BufNewFile *.{md,mkd,mdwn,mkdn,mark*} set filetype=markdown
 "}}}
 "buddy-switch setting {{{2
 nnoremap <silent> ,bo :<C-u>call RSSwitch()<CR>
