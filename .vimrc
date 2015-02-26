@@ -1,16 +1,11 @@
-"NeoBundle {{{1
-
+"NeoBundle {{{
 "NeoBundle Setting{{{2
-"デフォルトプロトコル変更
 let g:neobundle_default_git_protocol='https'
-" bundleで管理するディレクトリを指定
 set runtimepath+=~/.vim/bundle/neobundle.vim/
-" Required:
-call neobundle#begin(expand('~/.vim/bundle/'))
-" neobundle自体をneobundleで管理
-NeoBundleFetch 'Shougo/neobundle.vim'
 "}}}
- 
+" plugins{{{2
+call neobundle#begin(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/vimproc', {
   \ 'build' : {
     \ 'windows' : 'make -f make_mingw32.mak',
@@ -21,6 +16,45 @@ NeoBundle 'Shougo/vimproc', {
 \ }
 NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tomtom/tcomment_vim' 
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'LeafCage/yankround.vim'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'fuenor/qfixgrep'
+NeoBundle 'fuenor/qfixhowm'
+NeoBundle 'Shougo/neocomplete'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'mhinz/vim-startify'            "vimのスタート画面を豪華に
+NeoBundle 'soramugi/auto-ctags.vim'
+NeoBundle 'haya14busa/incsearch.vim'      "イカスインクリメンタルサーチ
+NeoBundle "airblade/vim-rooter"
+NeoBundle "sjl/gundo.vim"
+NeoBundle 'mattn/emmet-vim'
+NeoBundle "osyo-manga/vim-watchdogs"      "code check 
+NeoBundle "osyo-manga/shabadou.vim"       "quickrun hooks
+NeoBundle "jceb/vim-hier"                 "quickfixの該当箇所をハイライト
+NeoBundle "dannyob/quickfixstatus"        "quickfixの内容をコマンドラインに
+NeoBundle 'kana/vim-operator-user.git'    " オペレーター拡張
+NeoBundle 'kana/vim-operator-replace.git' " テキストオブジェクトで置換
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'tpope/vim-endwise'
+
+NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'tyru/open-browser.vim'
+
+call neobundle#end()
+
+filetype plugin indent on
+NeoBundleCheck
+"}}}
+"plugin settings 
+"-----------------------------------------
 "Unite Setting {{{2
 
 " insert modeで開始しない(デフォルト)
@@ -36,18 +70,16 @@ nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
 nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
 nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> ,uy :<C-u>Unite history/yank<CR>
-
-" 閉じちゃったUniteをもう一度開く
-nnoremap <silent> ,ur :<C-u>UniteResume<CR>
 " nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> ,ur :<C-u>UniteResume<CR>
 nnoremap <silent> ,ul :<C-u>Unite -buffer-name=search line -start-insert -no-quit -winheight=15<CR>
 
 NeoBundle 'osyo-manga/unite-qfixhowm'
+call unite#custom_source('qfixhowm', 'sorters', ['sorter_qfixhowm_updatetime', 'sorter_reverse'])
 nnoremap <silent> ,uh :<C-u>Unite qfixhowm/new qfixhowm:nocache -hide-source-names<CR>
 
 NeoBundle 'tsukkee/unite-tag' 
 nnoremap <silent> ,ut :<C-u>Unite tag -start-insert<CR>
-
 
 "カレントがgitプロジェクトか判断してコマンドを切り替え
 function! DispatchUniteFileRecAsyncOrGit()
@@ -73,25 +105,23 @@ nnoremap <silent> ,ug :<C-u>call DispatchUniteGrepOrGrepGit()<CR>
 
 NeoBundle 'Shougo/neomru.vim'
 
+"MRUからhowmのファイルを除外
+call unite#custom#source('file_mru', 'ignore_pattern', '\/howm\/')
+
 "}}}
-
-
-NeoBundle 'scrooloose/nerdtree'
 " nerdtree setting {{{2
 "隠しファイルを表示する。
 let NERDTreeShowHidden = 1 
 " }}}
-
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tomtom/tcomment_vim' "コメントアウトプラギン <C-/><C-/>
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+"indent-guides setting {{{2
 let g:indent_guides_enable_on_vim_startup = 1
-
-NeoBundle 'osyo-manga/vim-over'
+"}}}
+"over setting {{{2
 nnoremap <silent> ,o :OverCommandLine<CR>
-
-NeoBundle 'LeafCage/yankround.vim'
+"}}}
+"lightline setting {{{2
+source ~/.vimrc_lightline
+"}}}
 " yankround setting {{{2
 nmap p <Plug>(yankround-p)
 nmap P <Plug>(yankround-P)
@@ -100,24 +130,9 @@ nmap <C-n> <Plug>(yankround-next)
 "" 履歴取得数
 let g:yankround_max_history = 40
 "}}}
-NeoBundle 'itchyny/lightline.vim'
-source ~/.vimrc_lightline
-
-NeoBundle 'fuenor/qfixgrep'
-NeoBundle 'fuenor/qfixhowm'
-"" qfixhowm {{{2
-" g,<space> 
-" その日の日付でファイルが作成される。 
-" 二度目もそのファイルが開かれるので、ぱっとだしやすい
-" g,m 
-" 最近閲覧、更新したエントリ一覧を表示
-" g,g 
-" grepする（howm保存ディレクトリ配
-" ファイル拡張子をmdにする
+" qfixhowm setting{{{2
 let howm_filename = '%Y/%m/%Y-%m-%d-%H%M%S.md'
-" ファイルタイプをmarkdownにする
 let QFixHowm_FileType = 'markdown'
-" タイトル記号
 let QFixHowm_Title = '#'
 " タイトル行検索正規表現の辞書を初期化
 let QFixMRU_Title = {}
@@ -126,8 +141,7 @@ let QFixMRU_Title['mkd'] = '^###[^#]'
 " grepでタイトル行とみなす正規表現(使用するgrepによっては変更する必要があります)
 let QFixMRU_Title['mkd_regxp'] = '^###[^#]'
 " }}}
-NeoBundle 'Shougo/neocomplete'
-" neocomplete {{{
+" neocomplete setting {{{
 
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -213,9 +227,7 @@ endif
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " }}}
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-" neosnippet {{{2
+" neosnippet setting{{{2
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -234,10 +246,7 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 " }}}
-
-"vimのスタート画面を豪華に
-NeoBundle 'mhinz/vim-startify'
-" vim-startify setting {{{2
+" startify setting {{{2
 
 " 表示数
 let g:startify_files_number = 15
@@ -260,9 +269,7 @@ let g:startify_skiplist = [
   \ 'howm',
   \ ]
 " }}}
-
-NeoBundle 'soramugi/auto-ctags.vim'
-" auto-ctags Setting {{{2
+" auto-ctags setting {{{2
 
 "自動でCtags生成 手動は:Ctags
 let g:auto_ctags = 1
@@ -270,9 +277,6 @@ let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
 let g:auto_ctags_directory_list = ['.git', '.svn']
 set tags+=.git/tags,.svn/tags
 " }}}
-
-"イカスインクリメンタルサーチ
-NeoBundle 'haya14busa/incsearch.vim'
 "incsearch setting {{{2
 "<Tab>/<S-Tab>で前後のマッチに移動できる
 " 画面内に目的地がないと判断すれば一気にスキップして画面外の次のマッチに飛べる(<C-j>/<C-k>)
@@ -290,9 +294,7 @@ map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 "}}}2
-
-NeoBundle "airblade/vim-rooter"
-" vim-rooter setting {{{2
+" rooter setting {{{2
 if ! empty(neobundle#get("vim-rooter"))
   " Change only current window's directory
   let g:rooter_use_lcd = 1
@@ -302,30 +304,82 @@ if ! empty(neobundle#get("vim-rooter"))
   autocmd! BufEnter *.c,*.cc,*.cxx,*.cpp,*.h,*.hh,*.java,*.py,*.sh,*.rb,*.html,*.css,*.js :Rooter
 endif
 " }}}
-
-NeoBundle "sjl/gundo.vim"
-nnoremap <F5> :GundoToggle<CR>
-
-NeoBundle 'mattn/emmet-vim'
-
-" テキストオブジェクトで置換
-NeoBundle 'kana/vim-operator-user.git'
-NeoBundle 'kana/vim-operator-replace.git'
-"vim-operator-replace setting {{{2
-" yiw  -> _i"
+"operator-replace setting {{{2
 map _  <Plug>(operator-replace)
 vmap _  <Plug>(operator-replace)
 " }}}
+" endwise setting{{{2
+" neocompleteとの競合を避ける
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+"}}}
+" quickrun setting {{{2
+let g:quickrun_config = {}
+let g:quickrun_config._ = {'runner' : 'vimproc', "runner/vimproc/updatetime" : 60 }
+" let g:quickrun_config['ruby.rspec'] = { 'command': 'rspec' }
+let g:quickrun_config['ruby.rspec'] = {'command': 'rspec', 'cmdopt': '--format progress -I .', 'outputter': 'buffer:filetype=rspec-result'}
+augroup RSpec
+  autocmd!
+  autocmd BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.rspec
+augroup END
 
-call neobundle#end()
 
-" Required:
-filetype plugin indent on
-" 未インストールのプラグインがある場合、インストールするかどうかを尋ねてくれるようにする設定
-NeoBundleCheck
+" nnoremap <silent> ,rs :<C-u>QuickRun -outputter/buffer/split ":botright 15sp"<CR>
+nnoremap <silent> ,rs :<C-u>QuickRun -outputter/buffer/split ":vertical topleft"<CR>
+" nnoremap <silent> ,rs :<C-u>QuickRun<CR> 
+"}}}2
+" watchdogs setting {{{2
+let s:config = {
+\   "watchdogs_checker/_" : {
+\       "hook/u_nya_/enable" : 0,
+\       "hook/inu/enable" : 0,
+\       "hook/unite_quickfix/enable" : 0,
+\       "hook/echo/enable" : 0,
+\       "hook/back_buffer/enable" : 0,
+\       "hook/close_unite_quickfix/enable" : 0,
+\       "hook/close_buffer/enable_exit" : 0,
+\       "hook/close_quickfix/enable_exit" : 1,
+\       "hook/redraw_unite_quickfix/enable_exit" : 0,
+\       "hook/close_unite_quickfix/enable_exit" : 1,
+\       "runner/vimproc/updatetime" : 40, 
+\   },
+\   "ruby/watchdogs_checker" : {
+\       "type" : "watchdogs_checker/rubocop"
+\   },
+\   "ruby.rspec/watchdogs_checker" : {
+\       "type" : "watchdogs_checker/rubocop"
+\   },
+\}
+" ruby.rspec のファイルタイプに対応させるためには、.vim/bundle/vim-watchdogs/autoload/watchdogs.vim にも追記が必要
+call extend(g:quickrun_config, s:config)
+unlet s:config
+call watchdogs#setup(g:quickrun_config)
+" ファイル保存時にチェック
+" let g:watchdogs_check_BufWritePost_enable = 1
+" 一定時間キー入力が無かった場合にチェック
+let g:watchdogs_check_CursorHold_enable = 1
 
+"}}}
+"openbrowser setting{{{2
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+"}}}
+" plugin common setting {{{2
+function! ReloadAllUserCommand()
+  HierUpdate
+  call lightline#update()
+endfunction
+nnoremap <silent>,r  :<C-U>call ReloadAllUserCommand()<CR>
+nnoremap <silent><F5>  :<C-U>call ReloadAllUserCommand()<CR>
+" }}}
+"-----------------------------------------
 "end Neobundle }}}
-
 " common {{{1
 syntax on
 
@@ -413,6 +467,15 @@ nnoremap <C-Up> k
 nnoremap <C-Down> j
 set splitright
 set splitbelow
+"}}}
+"my plugin {{{
+set runtimepath+=~/.vim/buddy-swith/
+"buddy-switch setting {{{2
+nnoremap <silent> ,bo :<C-u>call RSSwitch()<CR>
+nnoremap <F4>         :<C-u>call RSSwitch()<CR>
+nnoremap <silent> ,bv :<C-u>call VRSSwitch()<CR>
+nnoremap <silent> ,bs :<C-u>call SRSSwitch()<CR>
+"}}}
 "}}}
 
 " vim: foldmethod=marker
