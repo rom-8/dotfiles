@@ -2,10 +2,10 @@ let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'mode_map': {'c': 'NORMAL'},
       \ 'active': {
-      \   'left': [ ['mode', 'paste'], ['fugitive', 'filename', 'anzu'],['syntastic'] ]
+      \   'left': [ ['mode', 'paste'], ['fugitive', 'filename', 'anzu'] ]
       \ },
       \ 'component': {
-      \   'lineinfo': ' %3l:%-2v',
+      \   'lineinfo': '%3l:%-2v',
       \ },
       \ 'component_function': {
       \   'modified': 'MyModified',
@@ -22,7 +22,6 @@ let g:lightline = {
       \   'fugitive': 'MyFugitive',
       \ },
       \ 'component_type': {
-      \   'syntastic': 'error',
       \   'fugitive': 'warning',
       \ }
       \ }
@@ -33,7 +32,7 @@ function! MyModified()
 endfunction
 
 function! MyReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? ' ' : ''
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '*' : ''
 endfunction
 
 function! MyFilename()

@@ -14,8 +14,14 @@ NeoBundle 'Shougo/vimproc', {
     \ 'unix' : 'make -f make_unix.mak',
   \ },
 \ }
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimshell', { 'depends' : ["Shougo/vimproc"] }
+NeoBundle 'Shougo/unite.vim', { 'depends' : ["Shougo/vimproc"] }
+NeoBundle 'tsukkee/unite-tag', { 'depends' : ["Shougo/unite.vim"] } 
+NeoBundle 'lambdalisue/unite-grep-vcs', { 'depends' : ["Shougo/unite.vim"] }
+NeoBundle 'Shougo/neomru.vim', { 'depends' : ["Shougo/unite.vim"] }
+NeoBundle 'osyo-manga/unite-qfixhowm', { 'depends' : ["Shougo/unite.vim","fuenor/qfixhowm"] }
+NeoBundle 'fuenor/qfixhowm'
+NeoBundle 'fuenor/qfixgrep', { 'depends' : ["fuenor/qfixhowm"] }
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tomtom/tcomment_vim' 
@@ -24,8 +30,6 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'fuenor/qfixgrep'
-NeoBundle 'fuenor/qfixhowm'
 NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -35,26 +39,28 @@ NeoBundle 'haya14busa/incsearch.vim'      "イカスインクリメンタルサ�
 NeoBundle "airblade/vim-rooter"
 NeoBundle "sjl/gundo.vim"
 NeoBundle 'mattn/emmet-vim'
-NeoBundle "osyo-manga/vim-watchdogs"      "code check 
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle "osyo-manga/vim-watchdogs", { 'depends' : ["Shougo/vimproc", "thinca/vim-quickrun"] }
 NeoBundle "osyo-manga/shabadou.vim"       "quickrun hooks
 NeoBundle "jceb/vim-hier"                 "quickfixの該当箇所をハイライト
 NeoBundle "dannyob/quickfixstatus"        "quickfixの内容をコマンドラインに
-NeoBundle 'kana/vim-operator-user.git'    " オペレーター拡張
-NeoBundle 'kana/vim-operator-replace.git' " テキストオブジェクトで置換
-NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'kana/vim-operator-user'    
+NeoBundle 'kana/vim-operator-replace', { 'depends' : ["kana/vim-operator-user"] } 
 NeoBundle 'tpope/vim-endwise'
-
 NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
+NeoBundleLazy 'rom-8/buddy-swith', {
+  \ 'autoload' : {'filetypes' : ['ruby', 'eruby', 'ruby.rspec']}}
 
 call neobundle#end()
 
 filetype plugin indent on
 NeoBundleCheck
 "}}}
-"plugin settings 
-"-----------------------------------------
+
+"plugin settings------
+
 "Unite Setting {{{2
 
 " insert modeで開始しない(デフォルト)
@@ -74,13 +80,6 @@ nnoremap <silent> ,uy :<C-u>Unite history/yank<CR>
 nnoremap <silent> ,ur :<C-u>UniteResume<CR>
 nnoremap <silent> ,ul :<C-u>Unite -buffer-name=search line -start-insert -no-quit -winheight=15<CR>
 
-NeoBundle 'osyo-manga/unite-qfixhowm'
-call unite#custom_source('qfixhowm', 'sorters', ['sorter_qfixhowm_updatetime', 'sorter_reverse'])
-nnoremap <silent> ,uh :<C-u>Unite qfixhowm/new qfixhowm:nocache -hide-source-names<CR>
-
-NeoBundle 'tsukkee/unite-tag' 
-nnoremap <silent> ,ut :<C-u>Unite tag -start-insert<CR>
-
 "カレントがgitプロジェクトか判断してコマンドを切り替え
 function! DispatchUniteFileRecAsyncOrGit()
   if isdirectory(getcwd()."/.git")
@@ -91,8 +90,16 @@ function! DispatchUniteFileRecAsyncOrGit()
 endfunction
 nnoremap <silent> ,uF :<C-u>call DispatchUniteFileRecAsyncOrGit()<CR>
 
-NeoBundle 'lambdalisue/unite-grep-vcs'
 
+"}}}
+"unite-qfixhowm setting {{{2
+call unite#custom_source('qfixhowm', 'sorters', ['sorter_qfixhowm_updatetime', 'sorter_reverse'])
+nnoremap <silent> ,uh :<C-u>Unite qfixhowm/new qfixhowm:nocache -hide-source-names<CR>
+"}}}
+"unite-tag setting{{{2
+nnoremap <silent> ,ut :<C-u>Unite tag -start-insert<CR>
+"}}}
+"unite-grep-vcs setting {{{2
 "カレントがgitプロジェクトか判断してコマンドを切り替え
 function! DispatchUniteGrepOrGrepGit()
   if isdirectory(getcwd()."/.git")
@@ -102,13 +109,12 @@ function! DispatchUniteGrepOrGrepGit()
   endif
 endfunction
 nnoremap <silent> ,ug :<C-u>call DispatchUniteGrepOrGrepGit()<CR>
-
-NeoBundle 'Shougo/neomru.vim'
-
+"}}}
+"unite neomru setting{{{2
 "MRUからhowmのファイルを除外
 call unite#custom#source('file_mru', 'ignore_pattern', '\/howm\/')
-
 "}}}
+
 " nerdtree setting {{{2
 "隠しファイルを表示する。
 let NERDTreeShowHidden = 1 
@@ -370,6 +376,12 @@ let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
 "}}}
+"buddy-switch setting {{{2
+nnoremap <silent> ,bo :<C-u>call RSSwitch()<CR>
+nnoremap <F4>         :<C-u>call RSSwitch()<CR>
+nnoremap <silent> ,bv :<C-u>call VRSSwitch()<CR>
+nnoremap <silent> ,bs :<C-u>call SRSSwitch()<CR>
+"}}}
 " plugin common setting {{{2
 function! ReloadAllUserCommand()
   HierUpdate
@@ -378,7 +390,6 @@ endfunction
 nnoremap <silent>,r  :<C-U>call ReloadAllUserCommand()<CR>
 nnoremap <silent><F5>  :<C-U>call ReloadAllUserCommand()<CR>
 " }}}
-"-----------------------------------------
 "end Neobundle }}}
 " common {{{1
 syntax on
@@ -467,15 +478,6 @@ nnoremap <C-Up> k
 nnoremap <C-Down> j
 set splitright
 set splitbelow
-"}}}
-"my plugin {{{
-set runtimepath+=~/.vim/buddy-swith/
-"buddy-switch setting {{{2
-nnoremap <silent> ,bo :<C-u>call RSSwitch()<CR>
-nnoremap <F4>         :<C-u>call RSSwitch()<CR>
-nnoremap <silent> ,bv :<C-u>call VRSSwitch()<CR>
-nnoremap <silent> ,bs :<C-u>call SRSSwitch()<CR>
-"}}}
 "}}}
 
 " vim: foldmethod=marker
