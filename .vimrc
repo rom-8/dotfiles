@@ -26,6 +26,7 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tomtom/tcomment_vim' 
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat', { 'depends' : ["tpope/vim-surround"] }
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
@@ -381,6 +382,9 @@ vmap gx <Plug>(openbrowser-smart-search)
 "previm setting{{{2
 autocmd BufWinEnter,BufNewFile *.{md,mkd,mdwn,mkdn,mark*} set filetype=markdown
 "}}}
+"Gundo setting{{{2
+nnoremap <silent> ,g :<C-u>GundoToggle<CR>
+"}}}
 "buddy-switch setting {{{2
 nnoremap <silent> ,bo :<C-u>call RSSwitch()<CR>
 nnoremap <F4>         :<C-u>call RSSwitch()<CR>
@@ -405,7 +409,7 @@ set modelines=3
 set swapfile
 set directory=~/.vim/tmp
 set backup
-set backupdir=~/.vim/tmp
+set backupdir=~/.vim/backup
 
 "tabstop系
 set tabstop=2
@@ -416,6 +420,7 @@ set expandtab shiftwidth=2
 "アンドゥの永続化
 set undofile
 set undodir=~/.vim/tmp
+set undolevels=200
 
 colorscheme desert
 
