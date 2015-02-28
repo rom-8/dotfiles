@@ -369,9 +369,9 @@ call extend(g:quickrun_config, s:config)
 unlet s:config
 call watchdogs#setup(g:quickrun_config)
 " ファイル保存時にチェック
-" let g:watchdogs_check_BufWritePost_enable = 1
+let g:watchdogs_check_BufWritePost_enable = 1
 " 一定時間キー入力が無かった場合にチェック
-let g:watchdogs_check_CursorHold_enable = 1
+"let g:watchdogs_check_CursorHold_enable = 1
 
 "}}}
 "openbrowser setting{{{2
