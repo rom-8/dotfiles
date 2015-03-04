@@ -14,19 +14,19 @@ NeoBundle 'Shougo/vimproc', {
     \ 'unix' : 'make -f make_unix.mak',
   \ },
 \ }
-NeoBundle 'Shougo/vimshell', { 'depends' : ["Shougo/vimproc"] }
-NeoBundle 'Shougo/unite.vim', { 'depends' : ["Shougo/vimproc"] }
-NeoBundle 'tsukkee/unite-tag', { 'depends' : ["Shougo/unite.vim"] } 
-NeoBundle 'lambdalisue/unite-grep-vcs', { 'depends' : ["Shougo/unite.vim"] }
-NeoBundle 'Shougo/neomru.vim', { 'depends' : ["Shougo/unite.vim"] }
-NeoBundle 'osyo-manga/unite-qfixhowm', { 'depends' : ["Shougo/unite.vim","fuenor/qfixhowm"] }
+NeoBundle 'Shougo/vimshell', { 'depends' : ['Shougo/vimproc'] }
+NeoBundle 'Shougo/unite.vim', { 'depends' : ['Shougo/vimproc'] }
+NeoBundle 'tsukkee/unite-tag', { 'depends' : ['Shougo/unite.vim'] } 
+NeoBundle 'lambdalisue/unite-grep-vcs', { 'depends' : ['Shougo/unite.vim'] }
+NeoBundle 'Shougo/neomru.vim', { 'depends' : ['Shougo/unite.vim'] }
+NeoBundle 'osyo-manga/unite-qfixhowm', { 'depends' : ['Shougo/unite.vim','fuenor/qfixhowm'] }
 NeoBundle 'fuenor/qfixhowm'
-NeoBundle 'fuenor/qfixgrep', { 'depends' : ["fuenor/qfixhowm"] }
+NeoBundle 'fuenor/qfixgrep', { 'depends' : ['fuenor/qfixhowm'] }
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tomtom/tcomment_vim' 
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-repeat', { 'depends' : ["tpope/vim-surround"] }
+NeoBundle 'tpope/vim-repeat', { 'depends' : ['tpope/vim-surround'] }
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
@@ -37,19 +37,22 @@ NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'mhinz/vim-startify'            "vimのスタート画面を豪華に
 NeoBundle 'soramugi/auto-ctags.vim'
 NeoBundle 'haya14busa/incsearch.vim'      "イカスインクリメンタルサーチ
-NeoBundle "airblade/vim-rooter"
-NeoBundle "sjl/gundo.vim"
+NeoBundle 'airblade/vim-rooter'
+NeoBundle 'sjl/gundo.vim'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle "osyo-manga/vim-watchdogs", { 'depends' : ["Shougo/vimproc", "thinca/vim-quickrun"] }
-NeoBundle "osyo-manga/shabadou.vim"       "quickrun hooks
-NeoBundle "jceb/vim-hier"                 "quickfixの該当箇所をハイライト
+NeoBundle 'osyo-manga/vim-watchdogs', { 'depends' : ["Shougo/vimproc", "thinca/vim-quickrun"] }
+NeoBundle 'osyo-manga/shabadou.vim'       "quickrun hooks
+NeoBundle 'jceb/vim-hier'                 "quickfixの該当箇所をハイライト
 NeoBundle "dannyob/quickfixstatus"        "quickfixの内容をコマンドラインに
 NeoBundle 'kana/vim-operator-user'    
 NeoBundle 'kana/vim-operator-replace', { 'depends' : ["kana/vim-operator-user"] } 
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'cohama/agit.vim'
+NeoBundle 'junegunn/vim-easy-align'
+
 NeoBundleLazy 'kannokanno/previm', {
       \    'depends' :   'open-browser.vim',
       \    'autoload' : {'filetypes': ['markdown']}}
@@ -397,6 +400,9 @@ nnoremap <silent> ,bo :<C-u>call RSSwitch()<CR>
 nnoremap <F4>         :<C-u>call RSSwitch()<CR>
 nnoremap <silent> ,bv :<C-u>call VRSSwitch()<CR>
 nnoremap <silent> ,bs :<C-u>call SRSSwitch()<CR>
+"}}}
+"easy-align setting {{{2
+vmap <Enter> <Plug>(LiveEasyAlign)
 "}}}
 " plugin common setting {{{2
 function! ReloadAllUserCommand()
