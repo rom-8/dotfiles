@@ -12,6 +12,8 @@ alias vi=vim
 alias howm="vim -c \":Unite qfixhowm/new qfixhowm -hide-source-names\""
 alias phowm="vim -c \":Unite qfixhowm/new qfixhowm -hide-source-names -auto-preview -no-split\""
 alias agit="vim -c \":Agit\""
+alias hex2dec="printf '%d\n'"
+alias dec2hex="printf '%x\n'"
 
 export HISTCONTROL=ignoreboth
 export HISTIGNORE="?:??:???:fg*:bg*:history*:cd*:exit*:pwd*:open .*:e .*:jobs*:dirs*:pushd*:popd*"
