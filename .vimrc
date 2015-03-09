@@ -404,6 +404,9 @@ nnoremap <silent> ,bs :<C-u>call SRSSwitch()<CR>
 "easy-align setting {{{2
 vmap <Enter> <Plug>(LiveEasyAlign)
 "}}}
+"vim-markdown setting{{{2
+let g:vim_markdown_folding_disabled=1
+"}}}
 " plugin common setting {{{2
 function! ReloadAllUserCommand()
   HierUpdate
