@@ -44,7 +44,8 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'osyo-manga/vim-watchdogs', { 'depends' : ["Shougo/vimproc", "thinca/vim-quickrun"] }
 NeoBundle 'osyo-manga/shabadou.vim'       "quickrun hooks
 NeoBundle 'jceb/vim-hier'                 "quickfixの該当箇所をハイライト
-NeoBundle "dannyob/quickfixstatus"        "quickfixの内容をコマンドラインに
+" NeoBundle "dannyob/quickfixstatus"        "quickfixの内容をコマンドラインに
+NeoBundle "pekepeke/quickfixstatus"        "quickfixの内容をコマンドラインに
 NeoBundle 'kana/vim-operator-user'    
 NeoBundle 'kana/vim-operator-replace', { 'depends' : ["kana/vim-operator-user"] } 
 NeoBundle 'tpope/vim-endwise'
