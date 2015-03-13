@@ -54,6 +54,11 @@ NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'cohama/agit.vim'
 NeoBundle 'junegunn/vim-easy-align'
 
+"colorscheme
+NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'tomasr/molokai'
+
 NeoBundleLazy 'kannokanno/previm', {
       \    'depends' :   'open-browser.vim',
       \    'autoload' : {'filetypes': ['markdown']}}
@@ -439,7 +444,7 @@ set undofile
 set undodir=~/.vim/tmp
 set undolevels=200
 
-colorscheme desert
+colorscheme hybrid
 
 set incsearch
 set ignorecase
