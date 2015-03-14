@@ -4,9 +4,18 @@
 alias vi=vim
 alias e=explorer
 
-alias ls="ls -F"
-alias la="ls -aF"
-alias ll="ls -l"
+case "${OSTYPE}" in
+darwin*)
+  alias ls="ls -G"
+  alias ll="ls -lG"
+  alias la="ls -aFG"
+  ;;
+linux*)
+  alias ls="ls -F --color=auto --show-control-chars"
+  alias ll='ls -l --color'
+  alias la='ls -la --color'
+  ;;
+esac
 alias j=jobs
 alias vi=vim
 alias howm="vim -c \":Unite qfixhowm/new qfixhowm -hide-source-names\""
