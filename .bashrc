@@ -10,6 +10,7 @@ darwin*)
   alias ll="ls -lG"
   alias la="ls -aFG"
   export LSCOLORS=gxfxcxdxbxegedabagacad
+  alias grep=ggrep
   ;;
 cygwin*)
   alias ls="ls -F --color=auto --show-control-chars"
