@@ -50,7 +50,12 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-operator-replace', { 'depends' : ["kana/vim-operator-user"] } 
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'plasticboy/vim-markdown'
+
+" Markdown syntax
+NeoBundle "godlygeek/tabular"
+NeoBundle "joker1007/vim-markdown-quote-syntax"
+NeoBundle "rcmdnk/vim-markdown"
+
 NeoBundle 'cohama/agit.vim'
 NeoBundle 'junegunn/vim-easy-align'
 
@@ -386,6 +391,12 @@ unlet s:config
 call watchdogs#setup(g:quickrun_config)
 " ファイル保存時にチェック
 let g:watchdogs_check_BufWritePost_enable = 1
+" let g:watchdogs_check_BufWritePost_enables = {
+" \ "cpp"        :1,
+" \ "ruby"       :1,
+" \ "ruby.rspec" :1,
+" \ "haskell"    :1
+" \}
 " 一定時間キー入力が無かった場合にチェック
 "let g:watchdogs_check_CursorHold_enable = 1
 
@@ -396,7 +407,7 @@ nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
 "}}}
 "previm setting{{{2
-autocmd BufWinEnter,BufNewFile *.{md,mkd,mdwn,mkdn,mark*} set filetype=markdown
+autocmd BufWinEnter,BufNewFile *.{md,mkd,mdwn,mkdn,txt,text,mark*} set filetype=markdown
 "}}}
 "Gundo setting{{{2
 nnoremap <silent> ,g :<C-u>GundoToggle<CR>
@@ -412,6 +423,9 @@ vmap <Enter> <Plug>(LiveEasyAlign)
 "}}}
 "vim-markdown setting{{{2
 let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_liquid=1
+let g:vim_markdown_frontmatter=1
+let g:vim_markdown_math=1
 "}}}
 " plugin common setting {{{2
 function! ReloadAllUserCommand()
