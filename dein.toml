@@ -1,0 +1,174 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'tools\\update-dll-mingw'
+  elseif dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = "fuenor/qfixhowm"
+hook_add = '''
+	let howm_dir ='~/howm'
+	let howm_filename = '%Y/%m/%Y-%m-%d-%H%M%S.md'
+	let QFixHowm_FileType = 'markdown'
+	let QFixHowm_Title = '#'
+	" タイトル行検索正規表現の辞書を初期化
+	let QFixMRU_Title = {}
+	" MRUでタイトル行とみなす正規表現(Vimの正規表現で指定)
+	let QFixMRU_Title['mkd'] = '^###[^#]'
+	" grepでタイトル行とみなす正規表現(使用するgrepによっては変更する必要があります)
+	let QFixMRU_Title['mkd_regxp'] = '^###[^#]'
+'''
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
+depends = ['tpope/vim-surround']
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+hook_add = '''
+  let g:indent_guides_enable_on_vim_startup = 1
+  let g:indent_guides_enable_on_vim_startup=1
+  let g:indent_guides_start_level=2
+  let g:indent_guides_auto_colors=0
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
+  let g:indent_guides_color_change_percent = 30
+  let g:indent_guides_guide_size = 1
+'''
+
+[[plugins]]
+repo = 'kana/vim-operator-user'    
+
+[[plugins]]
+repo = 'kana/vim-operator-replace'
+depends = ['kana/vim-operator-user'] 
+
+[[plugins]]
+repo = 'tpope/vim-endwise'
+
+[[plugins]]
+repo = 'mhinz/vim-startify'
+hook_add = '''
+  " 表示数
+  let g:startify_files_number = 15
+
+  " startifyのヘッダー部分に表示する文字列を設定する(dateコマンドを実行して日付を設定している)
+  let g:startify_custom_header =
+    \ map(split(system('date'), '\n'), '"   ". v:val') + ['','']
+  " デフォルトだと、最近使ったファイルの先頭は数字なので、使用するアルファベットを指定
+  let g:startify_custom_indices = ['f', 'g', 'h', 'r', 'i', 'o', 'b']
+  " よく使うファイルをブックマークとして登録しておく
+  let g:startify_bookmarks = [
+    \ '~/.vimrc',
+    \ '~/.gitconfig',
+    \ ]
+  "ディレクトリの移動
+  let g:startify_change_to_dir = 1
+  "プロジェクトのルートディレクトリへ
+  let g:startify_change_to_vcs_root = 1
+  let g:startify_skiplist = [
+    \ 'howm',
+    \ ]
+'''
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+depends = ['tpope/vim-fugitive']
+hook_add = '''
+  let g:lightline = {
+        \ 'colorscheme': 'powerline',
+        \ 'mode_map': {'c': 'NORMAL'},
+        \ 'active': {
+        \   'left': [ ['mode', 'paste'], ['fugitive', 'filename', 'anzu'] ]
+        \ },
+        \ 'component': {
+        \   'lineinfo': '%3l:%-2v',
+        \ },
+        \ 'component_function': {
+        \   'modified': 'MyModified',
+        \   'readonly': 'MyReadonly',
+        \   'filename': 'MyFilename',
+        \   'fileformat': 'MyFileformat',
+        \   'filetype': 'MyFiletype',
+        \   'fileencoding': 'MyFileencoding',
+        \   'mode': 'MyMode',
+        \   'anzu': 'anzu#search_status',
+        \ },
+        \ 'component_expand': {
+        \   'syntastic': 'SyntasticStatuslineFlag',
+        \   'fugitive': 'MyFugitive',
+        \ },
+        \ 'component_type': {
+        \   'fugitive': 'warning',
+        \ }
+        \ }
+
+
+  function! MyModified()
+    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  endfunction
+
+  function! MyReadonly()
+    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '*' : ''
+  endfunction
+
+  function! MyFilename()
+    return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+          \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+          \  &ft == 'unite' ? unite#get_status_string() :
+          \  &ft == 'vimshell' ? vimshell#get_status_string() :
+          \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+          \ ('' != MyModified() ? ' ' . MyModified() : '')
+  endfunction
+
+  function! MyFugitive()
+    try
+      if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head') && strlen(fugitive#head())
+        return '＠' . fugitive#head()
+      endif
+    catch
+    endtry
+    return ''
+  endfunction
+
+  function! MyFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+  endfunction
+
+  function! MyFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  endfunction
+
+  function! MyFileencoding()
+    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  endfunction
+
+  function! MyMode()
+    return winwidth(0) > 60 ? lightline#mode() : ''
+  endfunction
+'''
+
