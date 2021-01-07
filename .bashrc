@@ -24,7 +24,13 @@ alias vi=vim
 #alias agit="vim -c \":Agit\""
 alias hex2dec="printf '%d\n'"
 alias dec2hex="printf '%x\n'"
+
+# fzf
 alias ge="grep_edit"
+alias gep="grep_edit_with_preview"
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border --preview "bat --style=numbers --color=always --line-range :500 {}"'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+
 
 export HISTCONTROL=ignoreboth
 export HISTIGNORE="?:??:???:fg*:bg*:history*:cd*:exit*:pwd*:open .*:e .*:jobs*:dirs*:pushd*:popd*"
@@ -64,13 +70,30 @@ grep_edit(){
 		local opt="-"
 		shift
 	fi
-	if [ $# -ne 2 ]; then
+	if [ $# -lt 1 ]; then
 		echo "keyword and folder plz." >&2
 		return 1
 	fi
-	local l=$(grep -rnI $opt $* | fzf | awk -F: '{print "+"$2" "$1}')
+	##local l=$(grep -rnI $opt $* | fzf | awk -F: '{print "+"$2" "$1}')
+	local l=$(rg -n $opt $* | fzf --preview-window=right:0% | awk -F: '{print "+"$2" "$1}')
 	if [[ -n "$l" ]]; then
 		vim $l
 	fi
 }
 
+grep_edit_with_preview(){
+	local opt=""
+	if [ "$1" = "-i" ]; then
+		local opt="-"
+		shift
+	fi
+	if [ $# -ne 2 ]; then
+		echo "keyword and folder plz." >&2
+		return 1
+	fi
+	#local l=$(grep -rnI $opt $* | awk -F: '{print $1}' | fzf )
+	local l=$(rg -o $opt $* | awk -F: '{print $1}'|uniq | fzf )
+	if [[ -n "$l" ]]; then
+		vim $l
+	fi
+}
