@@ -28,6 +28,7 @@ alias dec2hex="printf '%x\n'"
 # fzf
 alias ge="grep_edit"
 alias gep="grep_edit_with_preview"
+alias fcd="find_cd"
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border --preview "bat --style=numbers --color=always --line-range :500 {}"'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 
@@ -95,5 +96,13 @@ grep_edit_with_preview(){
 	local l=$(rg -o $opt $* | awk -F: '{print $1}'|uniq | fzf )
 	if [[ -n "$l" ]]; then
 		vim $l
+	fi
+}
+
+find_cd(){
+  #local l=$(find * -type d 2>/dev/null | fzf --preview "ls -FG {}")
+  local l=$(fd -t d $* | fzf --preview "exa -aF {}")
+	if [[ -n "$l" ]]; then
+		cd $l
 	fi
 }
