@@ -28,6 +28,8 @@ alias dec2hex="printf '%x\n'"
 # fzf
 alias ge="grep_edit"
 alias gep="grep_edit_with_preview"
+alias fcd="find_cd"
+alias fe="find_edit"
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border --preview "bat --style=numbers --color=always --line-range :500 {}"'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 
@@ -41,17 +43,17 @@ export HISTSIZE=99
 export HISTFILESIZE=99
 
 
-#export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWDIRTYSTATE=true
 #add されていない変更の存在を「＊」で示す
 #commit されていない変更の存在を「＋」で示す
 
-#export GIT_PS1_SHOWUNTRACKEDFILES=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
 #add されていない新規ファイルの存在を「％」で示す
 
-#export GIT_PS1_SHOWSTASHSTATE=true
+export GIT_PS1_SHOWSTASHSTATE=true
 #stash がある場合は「＄」で示す
 
-#export GIT_PS1_SHOWUPSTREAM=auto
+export GIT_PS1_SHOWUPSTREAM=auto
 #upstream と同期している場合は「＝」で示す
 #upstream より進んでいる場合は「＞」で示す
 #upstream より遅れている場合は「＜」で示す
@@ -70,10 +72,6 @@ grep_edit(){
 		local opt="-"
 		shift
 	fi
-	if [ $# -lt 1 ]; then
-		echo "keyword and folder plz." >&2
-		return 1
-	fi
 	##local l=$(grep -rnI $opt $* | fzf | awk -F: '{print "+"$2" "$1}')
 	local l=$(rg -n $opt $* | fzf --preview-window=right:0% | awk -F: '{print "+"$2" "$1}')
 	if [[ -n "$l" ]]; then
@@ -87,12 +85,23 @@ grep_edit_with_preview(){
 		local opt="-"
 		shift
 	fi
-	if [ $# -ne 2 ]; then
-		echo "keyword and folder plz." >&2
-		return 1
-	fi
 	#local l=$(grep -rnI $opt $* | awk -F: '{print $1}' | fzf )
 	local l=$(rg -o $opt $* | awk -F: '{print $1}'|uniq | fzf )
+	if [[ -n "$l" ]]; then
+		vim $l
+	fi
+}
+
+find_cd(){
+  #local l=$(find * -type d 2>/dev/null | fzf --preview "ls -FG {}")
+  local l=$(fd -t d | fzf --preview "exa -aF {}")
+	if [[ -n "$l" ]]; then
+		cd $l
+	fi
+}
+
+find_edit(){
+  local l=$(fd -e md | fzf )
 	if [[ -n "$l" ]]; then
 		vim $l
 	fi
