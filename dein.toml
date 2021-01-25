@@ -17,6 +17,21 @@ hook_post_update = '''
 '''
 
 [[plugins]]
+repo= 'previm/previm'
+hook_add = '''
+  let g:previm_open_cmd = 'open -a Safari'
+  let g:previm_enable_realtime = 1
+
+'''
+
+[[plugins]]
+repo = "mattn/vim-maketable"
+
+[[plugins]]
+repo = "skanehira/translate.vim"
+
+
+[[plugins]]
 repo = "fuenor/qfixhowm"
 hook_add = '''
 	let howm_dir ='~/howm'
